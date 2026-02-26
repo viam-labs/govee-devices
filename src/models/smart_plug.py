@@ -50,10 +50,17 @@ class SmartPlug(Switch, EasyResource):
         self, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
     ):
         attrs = struct_to_dict(config.attributes)
-        self.api_key = str(attrs["api_key"]).strip()
-        self.device_id = str(attrs["device_id"]).strip()
-        self.sku = str(attrs["sku"]).strip()
+        LOGGER.info(f"SmartPlug reconfigure attrs={attrs}")
+        self.api_key = str(attrs.get("api_key", "")).strip()
+        self.device_id = str(attrs.get("device_id", "")).strip()
+        self.sku = str(attrs.get("sku", "")).strip()
         self.is_on = False
+
+        missing = [k for k in ["api_key", "device_id", "sku"] if not getattr(self, k)]
+        if missing:
+            LOGGER.error(f"SmartPlug missing required config attributes: {missing}")
+            raise ValueError(f"Missing required config attributes: {', '.join(missing)}")
+
         LOGGER.info(f"SmartPlug configured: sku={self.sku}, device={self.device_id}")
 
     async def _govee_request(
