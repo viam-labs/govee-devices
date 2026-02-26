@@ -141,10 +141,6 @@ class SmartPlug(Switch, EasyResource):
         timeout: Optional[float] = None,
         **kwargs,
     ) -> int:
-        try:
-            self.is_on = await self._get_device_state()
-        except Exception as e:
-            LOGGER.warning(f"Failed to query device state, using cached value: {e}")
         return 1 if self.is_on else 0
 
     async def set_position(
