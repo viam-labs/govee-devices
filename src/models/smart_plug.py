@@ -22,6 +22,11 @@ class SmartPlug(Switch, EasyResource):
         ModelFamily("viam-labs", "govee-devices"), "smart-plug"
     )
 
+    api_key: str = ""
+    device_id: str = ""
+    sku: str = ""
+    is_on: bool = False
+
     @classmethod
     def new(
         cls, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
@@ -135,8 +140,8 @@ class SmartPlug(Switch, EasyResource):
         extra: Optional[Mapping[str, Any]] = None,
         timeout: Optional[float] = None,
         **kwargs,
-    ) -> int:
-        return 2
+    ) -> Tuple[int, Sequence[str]]:
+        return 2, ["off", "on"]
 
     async def do_command(
         self,
