@@ -64,14 +64,18 @@ class SmartPlug(Switch, EasyResource):
             "Govee-API-Key": self.api_key,
             "Content-Type": "application/json",
         }
+        LOGGER.info(f"Govee API {method} {url} body={json_body} params={params}")
         async with aiohttp.ClientSession() as session:
             async with session.request(
                 method, url, headers=headers, json=json_body, params=params
             ) as resp:
+                body = await resp.text()
+                LOGGER.info(f"Govee API response: status={resp.status} body={body}")
                 if resp.status != 200:
-                    text = await resp.text()
-                    raise Exception(f"Govee API error (HTTP {resp.status}): {text}")
-                data = await resp.json()
+                    raise Exception(
+                        f"Govee API error (HTTP {resp.status}): {body}"
+                    )
+                data = await resp.json(content_type=None)
                 if data.get("code") != 200:
                     raise Exception(
                         f"Govee API error code {data.get('code')}: {data.get('message', 'unknown')}"
