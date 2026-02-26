@@ -4,3 +4,5 @@ viam-sdk==0.71.0
 typing-extensions
 
 aiohttp
+
+pyinstaller
