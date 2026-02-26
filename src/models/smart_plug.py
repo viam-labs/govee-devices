@@ -115,8 +115,14 @@ class SmartPlug(Switch, EasyResource):
         LOGGER.info(f"SmartPlug {self.device_id}: turned {'on' if turn_on else 'off'}")
 
     async def _get_device_state(self) -> bool:
-        params = {"device": self.device_id, "sku": self.sku}
-        data = await self._govee_request("GET", "/device/state", params=params)
+        body = {
+            "requestId": str(uuid.uuid4()),
+            "payload": {
+                "sku": self.sku,
+                "device": self.device_id,
+            },
+        }
+        data = await self._govee_request("POST", "/device/state", json_body=body)
         capabilities = data.get("payload", {}).get("capabilities", [])
         for cap in capabilities:
             if (
