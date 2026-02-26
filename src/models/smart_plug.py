@@ -49,17 +49,23 @@ class SmartPlug(Switch, EasyResource):
     def reconfigure(
         self, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
     ):
-        attrs = struct_to_dict(config.attributes)
-        LOGGER.info(f"SmartPlug reconfigure attrs={attrs}")
-        self.api_key = str(attrs.get("api_key", "")).strip()
-        self.device_id = str(attrs.get("device_id", "")).strip()
-        self.sku = str(attrs.get("sku", "")).strip()
-        self.is_on = False
+        LOGGER.info("SmartPlug reconfigure called")
+        try:
+            attrs = struct_to_dict(config.attributes)
+            LOGGER.info(f"SmartPlug reconfigure attrs={attrs}")
+            self.api_key = str(attrs.get("api_key", "")).strip()
+            self.device_id = str(attrs.get("device_id", "")).strip()
+            self.sku = str(attrs.get("sku", "")).strip()
+            self.is_on = False
 
-        missing = [k for k in ["api_key", "device_id", "sku"] if not getattr(self, k)]
-        if missing:
-            LOGGER.error(f"SmartPlug missing required config attributes: {missing}")
-            raise ValueError(f"Missing required config attributes: {', '.join(missing)}")
+            missing = [k for k in ["api_key", "device_id", "sku"] if not getattr(self, k)]
+            if missing:
+                raise ValueError(f"Missing required config attributes: {', '.join(missing)}")
+
+            LOGGER.info(f"SmartPlug configured: sku={self.sku}, device={self.device_id}")
+        except Exception as e:
+            LOGGER.error(f"SmartPlug reconfigure failed: {e}")
+            raise
 
         LOGGER.info(f"SmartPlug configured: sku={self.sku}, device={self.device_id}")
 
