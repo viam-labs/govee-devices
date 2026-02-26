@@ -8,7 +8,7 @@
     {
       "api": "rdk:component:switch",
       "model": "viam-labs:govee-devices:smart-plug",
-      "short_description": "Provide a short (100 characters or less) description of this model here",
+      "short_description": "Control Govee smart plugs via the Govee Cloud API",
       "markdown_link": "README.md#model-viam-labsgovee-devicessmart-plug"
     }
   ],
