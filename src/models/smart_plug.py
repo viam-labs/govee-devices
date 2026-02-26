@@ -31,7 +31,9 @@ class SmartPlug(Switch, EasyResource):
     def new(
         cls, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]
     ) -> Self:
-        return super().new(config, dependencies)
+        instance = super().new(config, dependencies)
+        instance.reconfigure(config, dependencies)
+        return instance
 
     @classmethod
     def validate_config(
