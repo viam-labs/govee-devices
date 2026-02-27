@@ -196,6 +196,13 @@ class SmartPlug(Switch, EasyResource):
                 except Exception as e:
                     result["toggle_switch"] = f"Error: {str(e)}"
 
+            if name == "get_status":
+                try:
+                    self.is_on = await self._get_device_state()
+                    result["get_status"] = "on" if self.is_on else "off"
+                except Exception as e:
+                    result["get_status"] = f"Error: {str(e)}"
+
         return result
 
     async def get_geometries(

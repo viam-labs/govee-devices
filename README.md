@@ -75,10 +75,22 @@ Toggle the smart plug to the opposite of its current state (queries current stat
 {"toggle_switch": {}}
 ```
 
-#### Example Response
+#### `get_status`
+
+Query the current power state of the smart plug from the Govee API.
+
+```json
+{"get_status": {}}
+```
+
+#### Example Responses
 
 ```json
 {"toggle_on": true}
 ```
 
-The value indicates the power state after the command (`true` = on, `false` = off).
+```json
+{"get_status": "on"}
+```
+
+Toggle commands return a boolean (`true` = on, `false` = off). `get_status` returns `"on"` or `"off"`.
