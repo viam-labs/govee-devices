@@ -60,11 +60,17 @@ class SmartPlug(Switch, EasyResource):
             self.sku = str(attrs.get("sku", "")).strip()
             self.is_on = False
 
-            missing = [k for k in ["api_key", "device_id", "sku"] if not getattr(self, k)]
+            missing = [
+                k for k in ["api_key", "device_id", "sku"] if not getattr(self, k)
+            ]
             if missing:
-                raise ValueError(f"Missing required config attributes: {', '.join(missing)}")
+                raise ValueError(
+                    f"Missing required config attributes: {', '.join(missing)}"
+                )
 
-            LOGGER.info(f"SmartPlug configured: sku={self.sku}, device={self.device_id}")
+            LOGGER.info(
+                f"SmartPlug configured: sku={self.sku}, device={self.device_id}"
+            )
         except Exception as e:
             LOGGER.error(f"SmartPlug reconfigure failed: {e}")
             raise
@@ -85,9 +91,7 @@ class SmartPlug(Switch, EasyResource):
             ) as resp:
                 body = await resp.text()
                 if resp.status != 200:
-                    raise Exception(
-                        f"Govee API error (HTTP {resp.status}): {body}"
-                    )
+                    raise Exception(f"Govee API error (HTTP {resp.status}): {body}")
                 data = await resp.json(content_type=None)
                 if data.get("code") != 200:
                     raise Exception(
