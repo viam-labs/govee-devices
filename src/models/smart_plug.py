@@ -3,7 +3,6 @@ from typing import Any, ClassVar, Dict, Mapping, Optional, Sequence, Tuple
 
 import aiohttp
 from typing_extensions import Self
-from viam.components.component_base import ComponentBase
 from viam.components.switch import *
 from viam.logging import getLogger
 from viam.proto.app.robot import ComponentConfig
